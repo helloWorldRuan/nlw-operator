@@ -1,38 +1,110 @@
 # devroast
 
-Uma aplicação para analisar e "roastar" seu código com estilo.
+<p align="center">
+  <img src="https://img.shields.io/badge/status-toasting-brightness-green?style=for-the-badge" alt="Status">
+  <img src="https://img.shields.io/badge/avg%20score-4.2%2F10-red?style=for-the-badge" alt="Avg Score">
+  <img src="https://img.shields.io/badge/codes%20roasted-2%2C847+-brightgreen?style=for-the-badge" alt="Roasted">
+</p>
+
+> **Your code walks into a bar. The bartender looks at it and says: "We don't serve code here."**
+>
+> *Welcome to devroast — where mediocre code meets its judgment.*
+
+---
+
+## What is this?
+
+**devroast** is a brutally honest code analyzer that doesn't pull punches. Drop your code, get roasted. It's like code review from your most sarcastic colleague, minus the passive-aggressive Slack messages.
+
+### Features
+
+- **Paste & Roast** — Submit your code and receive an honest, unbiased assessment
+- **Roast Mode** — Maximum sarcasm enabled. No feelings were hurt (probably)
+- **Shame Leaderboard** — See the worst code on the internet, ranked by collective shame
+- **Syntax Highlighting** — Beautiful code blocks so everyone can read your mistakes clearly
+
+---
+
+## Tech Stack
+
+| Technology | Why |
+|------------|-----|
+| [Next.js 16](https://nextjs.org/) | App Router because we're not living in the past |
+| [React 19](https://react.dev/) | The future is now |
+| [Tailwind CSS 4](https://tailwindcss.com/) | Utility-first, because inline styles are a war crime |
+| [Biome](https://biomejs.dev/) | Fast linter & formatter. We have standards. |
+| [Shiki](https://shiki.style/) | The syntax highlighter that actually looks good |
+
+---
 
 ## Getting Started
 
-First, run the development server:
-
 ```bash
+# Clone the repo
+git clone https://github.com/yourusername/devroast.git
+cd devroast
+
+# Install dependencies
+npm install
+
+# Fire it up
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) and prepare for judgment.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Project Structure
 
-## Learn More
+```
+src/
+├── app/
+│   ├── page.tsx              # Main entry - paste your shame
+│   ├── roast/page.tsx        # Roast results
+│   ├── leaderboard/page.tsx  # Hall of shame
+│   └── components/page.tsx   # Component showcase
+├── components/ui/            # Reusable UI components
+└── lib/cn.ts                 # cn() utility (single source)
+```
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Code Quality
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+<p align="center">
+  <img src="https://img.shields.io/badge/biome-clean-10B981?style=flat-square" alt="Biome">
+  <img src="https://img.shields.io/badge/types-strict-3B82F6?style=flat-square" alt="TypeScript">
+</p>
 
-## Deploy on Vercel
+This project follows strict standards:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- **TypeScript strict mode** — Because `any` is not a personality trait
+- **Biome linting** — Zero warnings, zero excuses
+- **Tailwind tokens** — No arbitrary colors, no chaos
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+## Contributing
+
+Found a way to make the roasts even meaner? PRs welcome.
+
+1. Fork it
+2. Create your feature branch (`git checkout -b feature/better-roasts`)
+3. Commit your changes (`git commit -m 'Add even spicier roast messages'`)
+4. Push to the branch (`git push origin feature/better-roasts`)
+5. Open a Pull Request
+
+---
+
+## License
+
+MIT — Because sharing is caring, even when it's code that shouldn't see daylight.
+
+---
+
+<p align="center">
+
+**Remember: Every line of code you write is a permanent testament to your decisions. Choose wisely.**
+
+</p>

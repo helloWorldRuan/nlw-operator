@@ -1,28 +1,20 @@
 import { cva, type VariantProps } from "class-variance-authority";
-import { type ClassValue, clsx } from "clsx";
 import { forwardRef } from "react";
-import { twMerge } from "tailwind-merge";
+import { cn } from "@/lib/cn";
 
-function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs));
-}
-
-export const buttonVariants = cva(
-  "cursor-pointer inline-flex items-center justify-center gap-2 whitespace-nowrap font-mono transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0A0A0A] disabled:pointer-events-none disabled:opacity-50",
+const buttonVariants = cva(
+  "cursor-pointer inline-flex items-center justify-center gap-2 whitespace-nowrap font-mono transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-bg-page disabled:pointer-events-none disabled:opacity-50",
   {
     variants: {
       variant: {
         default:
-          "bg-[#22C55E] text-[#0A0A0A] hover:bg-[#16A34A] focus-visible:ring-[#22C55E]",
+          "bg-accent-green text-page hover:bg-[#16A34A] focus-visible:ring-accent-green",
         destructive:
-          "bg-red-500 text-white hover:bg-red-600 focus-visible:ring-red-500",
-        outline:
-          "border border-[#2A2A2A] bg-transparent text-[#FAFAFA] hover:bg-[#1A1A1A] hover:text-[#FAFAFA] focus-visible:ring-[#2A2A2A]",
+          "bg-accent-red text-white hover:bg-red-600 focus-visible:ring-accent-red",
         secondary:
-          "border border-[#2A2A2A] bg-transparent text-[#FAFAFA] hover:bg-[#1A1A1A] hover:text-[#FAFAFA] focus-visible:ring-[#2A2A2A]",
+          "border border-border bg-transparent text-primary hover:bg-elevated focus-visible:ring-border",
         ghost:
-          "bg-transparent text-[#FAFAFA] hover:bg-[#1A1A1A] focus-visible:ring-[#2A2A2A]",
-        link: "border border-[#2A2A2A] bg-transparent text-[#6B7280] hover:text-[#FAFAFA] hover:border-[#FAFAFA] focus-visible:ring-[#2A2A2A]",
+          "border border-border bg-transparent text-secondary hover:text-primary hover:border-primary focus-visible:ring-border",
       },
       size: {
         default: "px-6 py-[10px] text-[13px] font-medium",
@@ -40,12 +32,10 @@ export const buttonVariants = cva(
 
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
-    VariantProps<typeof buttonVariants> {
-  asChild?: boolean;
-}
+    VariantProps<typeof buttonVariants> {}
 
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant, size, asChild = false, ...props }, ref) => {
+  ({ className, variant, size, ...props }, ref) => {
     return (
       <button
         className={cn(buttonVariants({ variant, size, className }))}
@@ -58,4 +48,4 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
 
 Button.displayName = "Button";
 
-export { Button, cn };
+export { Button, buttonVariants };

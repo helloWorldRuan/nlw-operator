@@ -14,6 +14,7 @@ import { ScoreRing } from "@/components/ui/score-ring";
 import { TableRow } from "@/components/ui/table-row";
 import { Toggle } from "@/components/ui/toggle";
 import { CodeBlockDemo } from "./code-block-demo";
+import { CodeEditorDemo } from "./code-editor-demo";
 
 export default function Home() {
   return (
@@ -210,6 +211,14 @@ export default function Home() {
             Code Block
           </h2>
           <CodeBlockDemo />
+        </section>
+
+        {/* Code Editor */}
+        <section className="space-y-4">
+          <h2 className="text-lg font-mono font-medium border-b border-border pb-2">
+            Code Editor
+          </h2>
+          <CodeEditorDemo />
         </section>
       </div>
     </main>

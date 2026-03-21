@@ -27,6 +27,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body
         className={`${jetbrainsMono.variable} ${ibmPlexSans.variable} antialiased`}
+        suppressHydrationWarning
       >
         {children}
       </body>

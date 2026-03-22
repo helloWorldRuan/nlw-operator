@@ -49,7 +49,7 @@ export function CodeCard({
       )}
     >
       {/* Header */}
-      <div className="flex h-10 items-center justify-between border-b border-border px-4">
+      <div className="flex h-10 shrink-0 items-center justify-between border-b border-border px-4">
         {variant === "editor" ? (
           <>
             <div className="flex items-center gap-1.5">
@@ -112,13 +112,13 @@ export function CodeCard({
       </div>
 
       {/* Code Block */}
-      <div className="flex h-[120px] overflow-hidden">
+      <div className="flex flex-1 overflow-hidden">
         {/* Line Numbers */}
-        <div className="flex w-10 flex-col gap-1.5 border-r border-border bg-surface px-[10px] py-3.5">
+        <div className="flex w-12 shrink-0 flex-col gap-2 border-r border-border bg-surface px-3 py-4">
           {displayLines.map((_, index) => (
             <span
               key={index}
-              className="font-mono text-[12px] text-right text-tertiary"
+              className="font-mono text-[12px] text-right leading-[1.5] text-tertiary"
             >
               {index + 1}
             </span>
@@ -126,7 +126,7 @@ export function CodeCard({
         </div>
 
         {/* Code Content */}
-        <pre className="flex-1 overflow-hidden px-4 py-3.5">
+        <pre className="flex-1 overflow-auto px-4 py-4">
           <code className="font-mono text-[12px] leading-[1.5]">
             {displayLines.map((line, index) => (
               <span key={index} className="block">

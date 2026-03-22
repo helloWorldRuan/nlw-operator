@@ -9,7 +9,9 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { CodeCard } from "@/components/ui/code-card";
+import { DiffBlock } from "@/components/ui/diff-block";
 import { DiffLine } from "@/components/ui/diff-line";
+import { IssueCard } from "@/components/ui/issue-card";
 import { ScoreRing } from "@/components/ui/score-ring";
 import { TableRow } from "@/components/ui/table-row";
 import { Toggle } from "@/components/ui/toggle";
@@ -133,6 +135,35 @@ export default function Home() {
           </div>
         </section>
 
+        {/* Issue Card */}
+        <section className="space-y-4">
+          <h2 className="text-lg font-mono font-medium border-b border-border pb-2">
+            Issue Card
+          </h2>
+          <div className="grid grid-cols-2 gap-4 max-w-3xl">
+            <IssueCard
+              severity="critical"
+              title="using var instead of const/let"
+              description="var is function-scoped and leads to hoisting bugs. use const by default, let when reassignment is needed."
+            />
+            <IssueCard
+              severity="warning"
+              title="imperative loop pattern"
+              description="for loops are verbose and error-prone. use .reduce() or .map() for cleaner, functional transformations."
+            />
+            <IssueCard
+              severity="good"
+              title="clear naming conventions"
+              description="calculateTotal and items are descriptive, self-documenting names that communicate intent."
+            />
+            <IssueCard
+              severity="good"
+              title="single responsibility"
+              description="the function does one thing well — calculates a total. no side effects, no mixed concerns."
+            />
+          </div>
+        </section>
+
         {/* Diff Line */}
         <section className="space-y-4">
           <h2 className="text-lg font-mono font-medium border-b border-border pb-2">
@@ -144,6 +175,43 @@ export default function Home() {
             <DiffLine
               type="context"
               code="for (let i = 0; i &lt; items.length; i++) {"
+            />
+          </div>
+        </section>
+
+        {/* Diff Block */}
+        <section className="space-y-4">
+          <h2 className="text-lg font-mono font-medium border-b border-border pb-2">
+            Diff Block
+          </h2>
+          <div className="max-w-2xl">
+            <DiffBlock
+              filename="your_code.ts → improved_code.ts"
+              lines={[
+                {
+                  type: "context",
+                  prefix: " ",
+                  code: "function calculateTotal(items) {",
+                },
+                { type: "removed", prefix: "-", code: "  var total = 0;" },
+                {
+                  type: "removed",
+                  prefix: "-",
+                  code: "  for (var i = 0; i < items.length; i++) {",
+                },
+                {
+                  type: "removed",
+                  prefix: "-",
+                  code: "    total = total + items[i].price;",
+                },
+                { type: "removed", prefix: "-", code: "  }" },
+                {
+                  type: "added",
+                  prefix: "+",
+                  code: "  return items.reduce((sum, item) => sum + item.price, 0);",
+                },
+                { type: "context", prefix: " ", code: "}" },
+              ]}
             />
           </div>
         </section>

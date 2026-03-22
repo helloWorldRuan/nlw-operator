@@ -3,7 +3,7 @@ import { config } from "dotenv";
 import { drizzle } from "drizzle-orm/node-postgres";
 import { analysisItems, roasts } from "./schema";
 
-config({ path: ".env.local", verbose: false });
+config({ path: ".env.local" });
 
 const databaseUrl = process.env.DATABASE_URL;
 

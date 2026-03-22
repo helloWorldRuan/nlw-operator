@@ -1,8 +1,8 @@
 "use client";
 
-import { Navbar } from "@/components/layout/navbar";
-import { LeaderboardEntry } from "@/components/ui/leaderboard-entry";
 import { useMemo } from "react";
+import { Navbar } from "@/components/layout/navbar";
+import { CodeCard } from "@/components/ui/code-card";
 
 const MOCK_LEADERBOARD = [
   {
@@ -82,8 +82,9 @@ export default function LeaderboardPage() {
           {/* Leaderboard Entries */}
           <div className="flex w-full flex-col gap-5">
             {MOCK_LEADERBOARD.map((entry) => (
-              <LeaderboardEntry
+              <CodeCard
                 key={entry.rank}
+                variant="leaderboard"
                 rank={entry.rank}
                 score={entry.score}
                 language={entry.language}

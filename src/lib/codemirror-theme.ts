@@ -4,14 +4,14 @@ import { EditorView } from "@codemirror/view";
 import { tags as t } from "@lezer/highlight";
 
 const colors = {
-  bg: "#0D1117",
-  bgElevated: "#161B22",
-  bgActive: "#21262D",
-  bgGutter: "#0D1117",
+  bg: "#111111",
+  bgElevated: "#171717",
+  bgActive: "#1A1A1A",
+  bgGutter: "#111111",
   bgSelectionFocused: "#1e4e8c",
   fg: "#C9D1D9",
   fgDim: "#8B949E",
-  border: "#30363D",
+  border: "#2E2E2E",
   cursor: "#C9D1D9",
   comment: "#6A9955",
   keyword: "#FF7B72",

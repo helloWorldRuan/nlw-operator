@@ -34,6 +34,33 @@
 | [Tailwind CSS 4](https://tailwindcss.com/) | Utility-first, because inline styles are a war crime |
 | [Biome](https://biomejs.dev/) | Fast linter & formatter. We have standards. |
 | [Shiki](https://shiki.style/) | The syntax highlighter that actually looks good |
+| [Drizzle ORM](https://orm.drizzle.team/) | Type-safe database queries, zero regrets |
+| [PostgreSQL 16](https://www.postgresql.org/) | The database that judges your data model |
+
+---
+
+## Database Setup
+
+### 1. Start PostgreSQL
+
+```bash
+docker compose up -d
+```
+
+### 2. Run migrations
+
+```bash
+npm run db:migrate
+```
+
+### Database Scripts
+
+| Command | Description |
+|---------|-------------|
+| `npm run db:generate` | Generate migrations from schema changes |
+| `npm run db:migrate` | Apply pending migrations |
+| `npm run db:push` | Push schema to database (dev) |
+| `npm run db:studio` | Open Drizzle Studio GUI |
 
 ---
 
@@ -65,7 +92,11 @@ src/
 │   ├── leaderboard/page.tsx  # Hall of shame
 │   └── components/page.tsx   # Component showcase
 ├── components/ui/            # Reusable UI components
+├── db/
+│   ├── schema.ts             # Database schema (tables, enums)
+│   └── index.ts              # Drizzle client
 └── lib/cn.ts                 # cn() utility (single source)
+drizzle/                      # Database migrations
 ```
 
 ---

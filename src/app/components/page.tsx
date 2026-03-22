@@ -8,12 +8,11 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { CodeCard } from "@/components/ui/code-card";
 import { DiffLine } from "@/components/ui/diff-line";
-import { LeaderboardEntry } from "@/components/ui/leaderboard-entry";
 import { ScoreRing } from "@/components/ui/score-ring";
 import { TableRow } from "@/components/ui/table-row";
 import { Toggle } from "@/components/ui/toggle";
-import { CodeBlockDemo } from "./code-block-demo";
 import { CodeEditorDemo } from "./code-editor-demo";
 
 export default function Home() {
@@ -176,41 +175,40 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Leaderboard Entry */}
+        {/* CodeCard */}
         <section className="space-y-4">
           <h2 className="text-lg font-mono font-medium border-b border-border pb-2">
-            Leaderboard Entry
+            CodeCard
           </h2>
-          <div className="flex flex-col gap-4 max-w-xl">
-            <LeaderboardEntry
-              rank={1}
-              score={1.2}
-              language="javascript"
-              lines={[
-                'eval(prompt("enter code"))',
-                "document.write(response)",
-                "// trust the user lol",
-              ]}
-            />
-            <LeaderboardEntry
-              rank={2}
-              score={1.8}
-              language="typescript"
-              lines={[
-                "if (x == true) { return true; }",
-                "else if (x == false) { return false; }",
-                "else { return !false; }",
-              ]}
-            />
+          <div className="flex flex-col gap-6">
+            <div className="flex flex-col gap-2">
+              <span className="text-sm text-secondary">
+                variant: &quot;editor&quot;
+              </span>
+              <CodeCard
+                variant="editor"
+                language="javascript"
+                filename="app.js"
+                lines={["function hello() {", "  console.log('Hello!');", "}"]}
+              />
+            </div>
+            <div className="flex flex-col gap-2">
+              <span className="text-sm text-secondary">
+                variant: &quot;leaderboard&quot;
+              </span>
+              <CodeCard
+                variant="leaderboard"
+                rank={1}
+                score={1.2}
+                language="javascript"
+                lines={[
+                  'eval(prompt("enter code"))',
+                  "document.write(response)",
+                  "// trust the user lol",
+                ]}
+              />
+            </div>
           </div>
-        </section>
-
-        {/* Code Block */}
-        <section className="space-y-4">
-          <h2 className="text-lg font-mono font-medium border-b border-border pb-2">
-            Code Block
-          </h2>
-          <CodeBlockDemo />
         </section>
 
         {/* Code Editor */}

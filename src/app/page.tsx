@@ -1,12 +1,13 @@
 "use client";
 
-import { Navbar } from "@/components/layout/navbar";
-import { Button } from "@/components/ui/button";
-import { CodeEditor } from "@/components/ui/code-editor";
-import { LeaderboardEntry } from "@/components/ui/leaderboard-entry";
-import { Toggle } from "@/components/ui/toggle";
 import Link from "next/link";
 import { useState } from "react";
+import { Navbar } from "@/components/layout/navbar";
+import { Button } from "@/components/ui/button";
+import { CodeCard } from "@/components/ui/code-card";
+import { CodeEditor } from "@/components/ui/code-editor";
+import { Toggle } from "@/components/ui/toggle";
+import { cn } from "@/lib/cn";
 
 const MOCK_LEADERBOARD_TOP3 = [
   {
@@ -37,12 +38,18 @@ const MOCK_LEADERBOARD_TOP3 = [
   },
 ];
 
+const MAX_CODE_LENGTH = 2000;
+
 export default function Home() {
   const [code, setCode] = useState("");
   const [roastMode, setRoastMode] = useState(true);
 
+  const charCount = code.length;
+  const isOverLimit = charCount > MAX_CODE_LENGTH;
+  const canSubmit = code.trim().length > 0 && !isOverLimit;
+
   const handleSubmit = () => {
-    if (!code.trim()) return;
+    if (!canSubmit) return;
     console.log("Submitting code:", code, "Roast mode:", roastMode);
   };
 
@@ -64,7 +71,24 @@ export default function Home() {
           </div>
 
           {/* Code Editor */}
-          <CodeEditor value={code} onChange={setCode} className="h-[360px]" />
+          <CodeEditor
+            value={code}
+            onChange={setCode}
+            placeholder="// paste your code here"
+            className="h-[400px]"
+          />
+
+          {/* Char Counter */}
+          <div className="-mt-4 flex justify-end">
+            <span
+              className={cn(
+                "font-mono text-[12px]",
+                isOverLimit ? "text-accent-red" : "text-tertiary",
+              )}
+            >
+              {charCount}/{MAX_CODE_LENGTH}
+            </span>
+          </div>
 
           {/* Actions Bar */}
           <div className="flex items-center justify-between">
@@ -78,7 +102,7 @@ export default function Home() {
               </span>
             </div>
 
-            <Button onClick={handleSubmit} disabled={!code.trim()}>
+            <Button onClick={handleSubmit} disabled={!canSubmit}>
               $ roast_my_code
             </Button>
           </div>
@@ -120,8 +144,9 @@ export default function Home() {
           {/* Leaderboard Entries - Top 3 */}
           <div className="flex flex-col gap-5">
             {MOCK_LEADERBOARD_TOP3.map((entry) => (
-              <LeaderboardEntry
+              <CodeCard
                 key={entry.rank}
+                variant="leaderboard"
                 rank={entry.rank}
                 score={entry.score}
                 language={entry.language}

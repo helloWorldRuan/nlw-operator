@@ -230,7 +230,7 @@ function CodeEditorInner({
         {showCopyButton && <CopyButton code={value || internalValue} />}
       </div>
 
-      <div className="relative flex-1 overflow-hidden">
+      <div className="relative flex-1 overflow-auto">
         <CodeMirror
           value={value ?? internalValue}
           height="100%"

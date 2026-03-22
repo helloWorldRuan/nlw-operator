@@ -16,9 +16,11 @@ npm run format # Format code
 ## Structure
 ```
 src/
-├── app/           # Pages: page.tsx, components/, leaderboard/, roast/
+├── app/           # Pages: page.tsx, components/, leaderboard/, roast/[id]/
 ├── components/ui/ # Reusable components
-└── lib/cn.ts      # Single source for cn()
+└── lib/
+    ├── cn.ts      # cn() utility (single source)
+    └── score.ts   # Score color utilities (getScoreColor, getScoreColorHex, getVerdictBadgeColor)
 ```
 
 ## Design Tokens (from .pen)

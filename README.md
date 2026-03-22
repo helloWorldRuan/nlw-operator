@@ -87,16 +87,24 @@ Open [http://localhost:3000](http://localhost:3000) and prepare for judgment.
 ```
 src/
 ├── app/
-│   ├── page.tsx              # Main entry - paste your shame
-│   ├── roast/page.tsx        # Roast results
-│   ├── leaderboard/page.tsx  # Hall of shame
-│   └── components/page.tsx   # Component showcase
-├── components/ui/            # Reusable UI components
+│   ├── page.tsx                      # Main entry - paste your shame
+│   ├── roast/[id]/page.tsx           # Roast results (dynamic)
+│   ├── roast/[id]/share/page.tsx     # Share page for results
+│   ├── roast/[id]/share/image.png.tsx # OG image generator
+│   ├── leaderboard/page.tsx           # Hall of shame
+│   └── components/page.tsx            # Component showcase
+├── components/ui/                     # Reusable UI components
+│   ├── score-ring.tsx               # Score visualization ring
+│   ├── issue-card.tsx               # Analysis issue card
+│   ├── diff-block.tsx               # Code diff display
+│   └── ...
 ├── db/
-│   ├── schema.ts             # Database schema (tables, enums)
-│   └── index.ts              # Drizzle client
-└── lib/cn.ts                 # cn() utility (single source)
-drizzle/                      # Database migrations
+│   ├── schema.ts                     # Database schema (tables, enums)
+│   └── index.ts                      # Drizzle client
+└── lib/
+    ├── cn.ts                         # cn() utility (single source)
+    └── score.ts                      # Score color utilities
+drizzle/                              # Database migrations
 ```
 
 ---

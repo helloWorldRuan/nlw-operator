@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Navbar } from "@/components/layout/navbar";
 import { Button } from "@/components/ui/button";
@@ -41,6 +42,7 @@ const MOCK_LEADERBOARD_TOP3 = [
 const MAX_CODE_LENGTH = 2000;
 
 export default function Home() {
+  const router = useRouter();
   const [code, setCode] = useState("");
   const [roastMode, setRoastMode] = useState(true);
 
@@ -50,7 +52,8 @@ export default function Home() {
 
   const handleSubmit = () => {
     if (!canSubmit) return;
-    console.log("Submitting code:", code, "Roast mode:", roastMode);
+    const id = crypto.randomUUID();
+    router.push(`/roast/${id}`);
   };
 
   return (

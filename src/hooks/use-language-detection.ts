@@ -73,6 +73,7 @@ const flouriteToShiki: Record<string, string> = {
 export interface UseLanguageDetectionOptions {
   debounceMs?: number;
   minLength?: number;
+  forceLanguage?: string | null;
 }
 
 export interface UseLanguageDetectionResult {
@@ -103,7 +104,7 @@ export function useLanguageDetection(
   code: string,
   options: UseLanguageDetectionOptions = {},
 ): UseLanguageDetectionResult {
-  const { debounceMs = 300, minLength = 10 } = options;
+  const { debounceMs = 300, minLength = 10, forceLanguage = null } = options;
 
   const [detectedLanguage, setDetectedLanguage] = useState<string | null>(null);
   const [manualLanguage, setManualLanguage] = useState<string | null>(null);
@@ -114,6 +115,16 @@ export function useLanguageDetection(
 
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const abortControllerRef = useRef<AbortController | null>(null);
+
+  const loadLanguageExtension = useCallback(async (lang: string) => {
+    const extensionGetter = getCodeMirrorExtension(lang);
+    if (extensionGetter) {
+      const { default: ext } = await extensionGetter();
+      setLanguageExtension(ext);
+    } else {
+      setLanguageExtension(null);
+    }
+  }, []);
 
   const detectLanguage = useCallback(
     async (codeToAnalyze: string) => {
@@ -142,14 +153,8 @@ export function useLanguageDetection(
 
           setDetectedLanguage(normalizedLang);
 
-          const extensionGetter = getCodeMirrorExtension(normalizedLang);
-          if (extensionGetter) {
-            const { default: ext } = await extensionGetter();
-            if (!abortControllerRef.current?.signal.aborted) {
-              setLanguageExtension(ext);
-            }
-          } else {
-            setLanguageExtension(null);
+          if (!abortControllerRef.current?.signal.aborted) {
+            await loadLanguageExtension(normalizedLang);
           }
         } catch {
           setLanguageExtension(null);
@@ -160,14 +165,26 @@ export function useLanguageDetection(
         }
       }, debounceMs);
     },
-    [debounceMs, minLength],
+    [debounceMs, minLength, loadLanguageExtension],
   );
 
   useEffect(() => {
+    if (forceLanguage) {
+      setManualLanguage(forceLanguage);
+      loadLanguageExtension(forceLanguage);
+      return;
+    }
+
     if (!manualLanguage) {
       detectLanguage(code);
     }
-  }, [code, manualLanguage, detectLanguage]);
+  }, [
+    code,
+    manualLanguage,
+    detectLanguage,
+    forceLanguage,
+    loadLanguageExtension,
+  ]);
 
   useEffect(() => {
     return () => {
@@ -180,16 +197,13 @@ export function useLanguageDetection(
     };
   }, []);
 
-  const handleSetManualLanguage = useCallback(async (lang: string) => {
-    setManualLanguage(lang);
-    const extensionGetter = getCodeMirrorExtension(lang);
-    if (extensionGetter) {
-      const { default: ext } = await extensionGetter();
-      setLanguageExtension(ext);
-    } else {
-      setLanguageExtension(null);
-    }
-  }, []);
+  const handleSetManualLanguage = useCallback(
+    async (lang: string) => {
+      setManualLanguage(lang);
+      await loadLanguageExtension(lang);
+    },
+    [loadLanguageExtension],
+  );
 
   const handleResetToAuto = useCallback(() => {
     setManualLanguage(null);

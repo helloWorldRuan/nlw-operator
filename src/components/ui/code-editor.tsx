@@ -61,6 +61,8 @@ export interface CodeEditorProps {
   showLanguageSelector?: boolean;
   showCopyButton?: boolean;
   filename?: string;
+  readOnly?: boolean;
+  language?: string;
 }
 
 function CopyButton({ code }: { code: string }) {
@@ -172,27 +174,22 @@ function LanguageSelector({
   );
 }
 
-function CodeEditorInner({
+export interface CodeMirrorContentProps {
+  value: string;
+  language?: string | null;
+  readOnly?: boolean;
+  className?: string;
+}
+
+export function CodeMirrorContent({
   value,
-  onChange,
-  placeholder,
+  language,
+  readOnly = false,
   className,
-  showLanguageSelector = true,
-  showCopyButton = true,
-  filename,
-}: CodeEditorProps) {
-  const [internalValue, setInternalValue] = useState(value || "");
-
-  const { detectedLanguage, isLoading, setManualLanguage } =
-    useLanguageDetection(value || internalValue);
-
-  const handleChange = useCallback(
-    (val: string) => {
-      setInternalValue(val);
-      onChange?.(val);
-    },
-    [onChange],
-  );
+}: CodeMirrorContentProps) {
+  const { detectedLanguage } = useLanguageDetection(value, {
+    forceLanguage: language || undefined,
+  });
 
   const extensions = useMemo(() => {
     const langExt = getLanguageExtension(detectedLanguage);
@@ -200,53 +197,21 @@ function CodeEditorInner({
   }, [detectedLanguage]);
 
   return (
-    <div
-      className={cn(
-        "flex flex-col overflow-hidden border border-border bg-input",
-        className,
-      )}
-    >
-      <div className="flex h-10 items-center gap-3 border-b border-border px-4">
-        <span className="h-2.5 w-2.5 rounded-full bg-accent-red" />
-        <span className="h-2.5 w-2.5 rounded-full bg-accent-amber" />
-        <span className="h-2.5 w-2.5 rounded-full bg-accent-green" />
-
-        <div className="flex-1" />
-
-        {filename && (
-          <span className="font-mono text-[12px] text-tertiary">
-            {filename}
-          </span>
+    <div className={cn("relative flex-1 overflow-auto", className)}>
+      <CodeMirror
+        value={value}
+        height="100%"
+        theme={devroastTheme}
+        extensions={extensions}
+        editable={!readOnly}
+        className={cn(
+          "h-full overflow-auto",
+          "[&_.cm-editor]:h-full",
+          "[&_.cm-scroller]:!font-mono",
+          "[&_.cm-content]:!text-[13px]",
+          "[&_.cm-line]:!leading-6",
         )}
-
-        {showLanguageSelector && (
-          <LanguageSelector
-            detectedLanguage={detectedLanguage}
-            isLoading={isLoading}
-            onSelect={setManualLanguage}
-          />
-        )}
-
-        {showCopyButton && <CopyButton code={value || internalValue} />}
-      </div>
-
-      <div className="relative flex-1 overflow-auto">
-        <CodeMirror
-          value={value ?? internalValue}
-          height="100%"
-          theme={devroastTheme}
-          extensions={extensions}
-          onChange={handleChange}
-          placeholder={placeholder}
-          className={cn(
-            "h-full overflow-auto",
-            "[&_.cm-editor]:h-full",
-            "[&_.cm-scroller]:!font-mono",
-            "[&_.cm-content]:!text-[13px]",
-            "[&_.cm-line]:!leading-6",
-          )}
-        />
-      </div>
+      />
     </div>
   );
 }
@@ -271,11 +236,72 @@ function CodeEditorSkeleton() {
 }
 
 export function CodeEditor(props: CodeEditorWrapperProps) {
-  const { loading, ...rest } = props;
+  const { loading } = props;
+  const {
+    value = "",
+    onChange,
+    className,
+    showLanguageSelector = true,
+    showCopyButton = true,
+    filename,
+    readOnly = false,
+    language,
+  } = props;
+
+  const [internalValue, setInternalValue] = useState(value);
+
+  const { detectedLanguage, isLoading, setManualLanguage } =
+    useLanguageDetection(value || internalValue, { forceLanguage: language });
+
+  const _handleChange = useCallback(
+    (val: string) => {
+      if (readOnly) return;
+      setInternalValue(val);
+      onChange?.(val);
+    },
+    [onChange, readOnly],
+  );
 
   if (loading) {
     return <CodeEditorSkeleton />;
   }
 
-  return <CodeEditorInner {...rest} />;
+  return (
+    <div
+      className={cn(
+        "flex flex-col overflow-hidden border border-border bg-input",
+        className,
+      )}
+    >
+      <div className="flex h-10 items-center gap-3 border-b border-border px-4">
+        <span className="h-2.5 w-2.5 rounded-full bg-accent-red" />
+        <span className="h-2.5 w-2.5 rounded-full bg-accent-amber" />
+        <span className="h-2.5 w-2.5 rounded-full bg-accent-green" />
+
+        <div className="flex-1" />
+
+        {filename && (
+          <span className="font-mono text-[12px] text-tertiary">
+            {filename}
+          </span>
+        )}
+
+        {showLanguageSelector && !readOnly && (
+          <LanguageSelector
+            detectedLanguage={detectedLanguage}
+            isLoading={isLoading}
+            onSelect={setManualLanguage}
+          />
+        )}
+
+        {showCopyButton && <CopyButton code={value || internalValue} />}
+      </div>
+
+      <CodeMirrorContent
+        value={value || internalValue}
+        language={language}
+        readOnly={readOnly}
+      />
+    </div>
+  );
 }

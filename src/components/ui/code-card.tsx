@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 import { cn } from "@/lib/cn";
+import { CodeMirrorContent } from "./code-editor";
 
 export type CodeCardVariant = "editor" | "leaderboard";
 
@@ -35,11 +36,16 @@ export function CodeCard({
     return getScoreColor(score);
   }, [score]);
 
-  const displayLines = useMemo(() => {
-    if (lines) return lines;
-    if (code) return code.split("\n");
-    return [];
+  const displayCode = useMemo(() => {
+    if (code) return code;
+    if (lines) return lines.join("\n");
+    return "";
   }, [code, lines]);
+
+  const lineCount = useMemo(() => {
+    if (displayCode) return displayCode.split("\n").length;
+    return 0;
+  }, [displayCode]);
 
   return (
     <div
@@ -48,7 +54,6 @@ export function CodeCard({
         className,
       )}
     >
-      {/* Header */}
       <div className="flex h-10 shrink-0 items-center justify-between border-b border-border px-4">
         {variant === "editor" ? (
           <>
@@ -104,37 +109,21 @@ export function CodeCard({
                 </span>
               )}
               <span className="font-mono text-[12px] text-tertiary">
-                {displayLines.length} lines
+                {lineCount} lines
               </span>
             </div>
           </>
         )}
       </div>
 
-      {/* Code Block */}
       <div className="flex flex-1 overflow-hidden">
-        {/* Line Numbers */}
-        <div className="flex w-12 shrink-0 flex-col gap-2 border-r border-border bg-surface px-3 py-4">
-          {displayLines.map((_, index) => (
-            <span
-              key={index}
-              className="font-mono text-[12px] text-right leading-[1.5] text-tertiary"
-            >
-              {index + 1}
-            </span>
-          ))}
-        </div>
-
-        {/* Code Content */}
-        <pre className="flex-1 overflow-auto px-4 py-4">
-          <code className="font-mono text-[12px] leading-[1.5]">
-            {displayLines.map((line, index) => (
-              <span key={index} className="block">
-                {line}
-              </span>
-            ))}
-          </code>
-        </pre>
+        {displayCode && (
+          <CodeMirrorContent
+            value={displayCode}
+            language={language}
+            readOnly={true}
+          />
+        )}
       </div>
     </div>
   );

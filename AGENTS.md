@@ -2,10 +2,11 @@
 
 ## Quick Commands
 ```bash
-npm run dev    # Start dev server
-npm run build  # Build production
-npm run lint   # Run linter
-npm run format # Format code
+npm run dev       # Start dev server
+npm run build     # Build production
+npm run lint      # Run linter
+npm run format    # Format code
+npm run db:start  # Start DB + push schema + seed
 ```
 
 ## Rules

@@ -1,8 +1,6 @@
 import Link from "next/link";
 import { Navbar } from "@/components/layout/navbar";
 import { CodeCard } from "@/components/ui/code-card";
-import { createTRPCContext } from "@/trpc/init";
-import { createCaller } from "@/trpc/server";
 import { HomeEditor } from "./_components/home-editor";
 import { StatsDisplay } from "./_components/stats-display";
 
@@ -36,9 +34,6 @@ const MOCK_LEADERBOARD_TOP3 = [
 ];
 
 export default async function Home() {
-  const caller = createCaller(await createTRPCContext());
-  const stats = await caller.getStats();
-
   return (
     <div className="flex min-h-screen flex-col bg-page">
       <Navbar />
@@ -62,10 +57,7 @@ export default async function Home() {
           <HomeEditor />
 
           {/* Footer Stats */}
-          <StatsDisplay
-            totalRoasts={stats.totalRoasts}
-            avgScore={stats.avgScore}
-          />
+          <StatsDisplay />
         </div>
 
         {/* Spacer */}
@@ -112,7 +104,6 @@ export default async function Home() {
 
           {/* Fade Hint */}
           <p className="py-4 text-center font-sans text-xs text-tertiary">
-            showing top 3 of {stats.totalRoasts} ·{" "}
             <Link
               href="/leaderboard"
               className="text-secondary hover:text-primary transition-colors"

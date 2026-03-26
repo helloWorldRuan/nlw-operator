@@ -141,6 +141,8 @@ export const analysisItems = pgTable("analysis_items", {
 ## Estrutura de arquivos
 
 ```
+scripts/
+  db-start.ts         # Sobe banco + espera estar pronto + migrate + seed
 src/
   db/
     index.ts          # Conexao com o banco (drizzle client, casing: snake_case)
@@ -228,12 +230,19 @@ export const db = drizzle(databaseUrl, {
 ```json
 {
   "scripts": {
+    "dev": "next dev",
+    "db:start": "tsx scripts/db-start.ts",
+    "db:setup": "docker compose up -d && docker compose exec -T postgres psql -U devroast -d devroast -c \"SELECT 1\" -t && npm run db:push && npm run db:seed",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
     "db:push": "drizzle-kit push",
-    "db:studio": "drizzle-kit studio"
+    "db:studio": "drizzle-kit studio",
+    "db:seed": "tsx src/db/seed.ts"
   }
 }
+```
+
+> Use `npm run db:start` para subir o banco, aplicar schema e popular dados de uma vez.
 ```
 
 ---
@@ -379,4 +388,18 @@ await db.transaction(async (tx) => {
 - [x] Subir o container: `docker compose up -d`
 - [x] Gerar a primeira migration: `npm db:generate`
 - [x] Aplicar migration: `npm db:migrate`
-- [ ] Atualizar `README.md` com instrucoes de setup do banco
+- [x] Atualizar `README.md` com instrucoes de setup do banco
+- [x] Adicionar script `db:start` para subir banco + migrations + seed de uma vez
+- [x] Configurar `POSTGRES_HOST_AUTH_METHOD: md5` no docker-compose para compatibilidade
+
+## Troubleshooting
+
+### Erro "password authentication failed"
+Se você tiver outro PostgreSQL rodando na porta 5432 (ex: WSL, instalação nativa), mate o processo:
+```bash
+# Windows: descubra o PID na porta 5432
+netstat -ano | findstr :5432
+
+# Mate o processo conflicting (não o Docker)
+taskkill //PID <PID> //F
+```

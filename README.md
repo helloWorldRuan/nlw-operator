@@ -41,25 +41,36 @@
 
 ## Database Setup
 
-### 1. Start PostgreSQL
+### Quick Start (recommended)
 
 ```bash
-docker compose up -d
+npm run db:start
 ```
 
-### 2. Run migrations
+This starts PostgreSQL, pushes the schema, and seeds sample data.
+
+### Manual Setup
 
 ```bash
-npm run db:migrate
+# Start PostgreSQL container
+docker compose up -d
+
+# Push schema to database
+npm run db:push
+
+# Seed sample data (optional)
+npm run db:seed
 ```
 
 ### Database Scripts
 
 | Command | Description |
 |---------|-------------|
+| `npm run db:start` | Start DB + push schema + seed (all in one) |
 | `npm run db:generate` | Generate migrations from schema changes |
 | `npm run db:migrate` | Apply pending migrations |
 | `npm run db:push` | Push schema to database (dev) |
+| `npm run db:seed` | Seed database with sample data |
 | `npm run db:studio` | Open Drizzle Studio GUI |
 
 ---

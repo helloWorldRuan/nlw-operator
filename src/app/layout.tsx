@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { IBM_Plex_Sans, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
+import { TRPCReactProvider } from "@/trpc/client";
 
 const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
@@ -29,7 +30,7 @@ export default function RootLayout({
         className={`${jetbrainsMono.variable} ${ibmPlexSans.variable} antialiased`}
         suppressHydrationWarning
       >
-        {children}
+        <TRPCReactProvider>{children}</TRPCReactProvider>
       </body>
     </html>
   );

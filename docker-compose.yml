@@ -7,6 +7,7 @@ services:
       POSTGRES_USER: devroast
       POSTGRES_PASSWORD: devroast
       POSTGRES_DB: devroast
+      POSTGRES_HOST_AUTH_METHOD: md5
     volumes:
       - devroast_pgdata:/var/lib/postgresql/data
 
